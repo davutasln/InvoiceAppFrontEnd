@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,11 +8,39 @@
     <link rel="stylesheet" href="./style.css">
     <title>Invoice</title>
 </head>
+
 <body>
-    <div class="customers">
+    <div class="container">
+        <div class="row">
+            <form>
+                <div class="col">
+                    <label for="start">Start Date:</label>
+                    <input type="date" id="startDate" name="trip-start" value="2023-01-01" min="2000-01-01"
+                        max="2025-12-31">
+                </div>
+                <div class="col">
+
+                    <label for="start">End Date:</label>
+                    <input type="date" id="endDate" name="trip-end" value="2023-01-30" min="2000-01-01"
+                        max="2025-12-31">
+                </div>
+                <div class="col">
+                    <button type="button" id="search">Search</button>
+                    <script src="./service.js"></script>
+                </div>
+                <div class="col">
+                    <input type="button" onclick="location.href='./saveInvoice.html';" value="Add Invoice" />
+                </div>
+            </form>
+        </div>
     </div>
+
+    <div id="results" style="padding-top: 10px; padding-bottom: 10px;"></div>
+
+    <!-- 
     <script src="./service.js">
-        
-    </script>
+
+    </script> -->
 </body>
+
 </html>

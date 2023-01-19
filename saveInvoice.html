@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <form>
+                <div class="col">
+                    <label for="name">ProductName : </label>
+                    <input type="text" id="productName" name="productName">
+                </div>
+                <div class="col">
+                    <label for="qty">Quantity : </label>
+                    <input type="number" id="quantity" name="quantity">
+                </div>
+                <div class="col">
+                    <label for="prc">Price : </label>
+                    <input type="number" id="price" name="price">
+                </div>
+                <div class="col">
+                    <button type="button" id="addInvoiceLine">Add Invoice Line</button>
+                    <script src="./lineService.js"></script>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div style="padding-top: 10px; padding-bottom: 10px;"></div>
+    <div id="lineResults" style="padding-top: 10px; padding-bottom: 10px;"></div>
+
+    <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
+        <div class="row">
+            <div class="col">
+                <form>
+                    <input type="button" id="btnGenerate" value="Populate DropDownList"
+                        onclick="PopulateDropDownList()" />
+                    <select id="ddlCustomers" size="1">
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button onclick="postInvoice()" type="button" id="addInvoice" href="./index.html">Save Invoice</button>
+            </div>
+            <div class="col">
+                <input type="button" onclick="location.href='./index.html';" value="Return Search Screen" />
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

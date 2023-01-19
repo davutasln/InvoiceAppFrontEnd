@@ -1,272 +1,67 @@
-const mainInvoice = document.querySelector(".invoices")
-const mainCustomer = document.querySelector(".customers")
+document.querySelector('#search').addEventListener('click', getByDate);
 
-const trimText =(value,number)=>{
-    return value.substring(0,number)+"..."
-}
+var invoices = [];
 
-let fetchBtns = document.querySelector('#btn');
+async function getByDate() {
 
-fetchBtns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-        let id = this.getAttribute('id');
-        getInvoiceLines(id);
-    });
-});
+    var url = "http://localhost:5000/api/invoice/bydate";
 
-const drawCustomerTable = ([])=>{
-    
-    var table = document.createElement("table");
-    table.classList.add("table-format")
-    var headerRow = document.createElement("tr");
-    headerRow.classList.add("table-header");
+    var startDate = document.getElementById('startDate').value;
+    var endDate = document.getElementById('endDate').value;
 
-    var TitleHeader = document.createElement("th");
-    TitleHeader.innerHTML = "Title";
-    var TaxNumberHeader = document.createElement("th");
-    TaxNumberHeader.innerHTML = "Tax Number";
-    var AddressHeader = document.createElement("th");
-    AddressHeader.innerHTML = "Address";
-    var ButtonHeader = document.createElement("th");
-    
-    headerRow.appendChild(TitleHeader);
-    headerRow.appendChild(TaxNumberHeader);
-    headerRow.appendChild(AddressHeader);
-    headerRow.appendChild(ButtonHeader);
-    table.appendChild(headerRow);
-    
-    for(var i=0;i<customers.length;i++){
-        var row = document.createElement("tr");
-        row.classList.add("table-row");
+    var content = new GetInvoice(startDate, endDate);
 
-        var titleCell = document.createElement("td");
-        titleCell.classList.add("row-cell")
-        titleCell.innerHTML=customers[i].title;
-        
-        var taxNumberCell = document.createElement("td");
-        taxNumberCell.classList.add("row-cell")
-        taxNumberCell.innerHTML=customers[i].taxNumber;
+    var data = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(content)
+    })
 
-        var addressCell = document.createElement("td");
-        addressCell.classList.add("row-cell")
-        addressCell.innerHTML=customers[i].address;
+    var result = await data.json();
 
-        var buttonCell = document.createElement("button");
-        buttonCell.classList.add("row-cell")
-        buttonCell.innerHTML="Select";
-
-        row.appendChild(titleCell);
-        row.appendChild(taxNumberCell);
-        row.appendChild(addressCell);
-        row.appendChild(buttonCell);
-        table.appendChild(row);
-    }
-
-    document.body.appendChild(table);
-};
-
-const drawInvoiceTable = ([])=>{
-    
-    var table = document.createElement("table");
-    table.classList.add("table-format")
-    var headerRow = document.createElement("tr");
-    headerRow.classList.add("table-header");
-
-    var InvoiceDateHeader = document.createElement("th");
-    InvoiceDateHeader.innerHTML = "Invoice Date";
-
-    var InvoiceNumberHeader = document.createElement("th");
-    InvoiceNumberHeader.innerHTML = "Invoice Number";
-
-    var InvoiceCustomerHeader = document.createElement("th");
-    InvoiceCustomerHeader.innerHTML = "Customer";
-    
-    var InvoiceCustomerTaxNumberHeader = document.createElement("th");
-    InvoiceCustomerTaxNumberHeader.innerHTML = "Customer Tax Number";
-
-    var TotalAmountHeader = document.createElement("th");
-    TotalAmountHeader.innerHTML = "Total Amount";
-
-    var ButtonHeader = document.createElement("th");
-    
-    headerRow.appendChild(InvoiceDateHeader);
-    headerRow.appendChild(InvoiceNumberHeader);
-    headerRow.appendChild(InvoiceCustomerHeader);
-    headerRow.appendChild(InvoiceCustomerTaxNumberHeader);
-    headerRow.appendChild(TotalAmountHeader);
-    headerRow.appendChild(ButtonHeader);
-    table.appendChild(headerRow);
-    
-    for(var i=0; i<invoices.length; i++){
-        var row = document.createElement("tr");
-        row.classList.add("table-row");
-
-        var InvoiceDateCell = document.createElement("td");
-        InvoiceDateCell.classList.add("row-cell")
-        InvoiceDateCell.innerHTML=new Date(Date.parse(invoices[i].invoiceDate)).toLocaleDateString();
-
-        var InvoiceNumberCell = document.createElement("td");
-        InvoiceNumberCell.classList.add("row-cell")
-        InvoiceNumberCell.innerHTML=invoices[i].invoiceNumber;
-
-        var InvoiceCustomerCell = document.createElement("td");
-        InvoiceCustomerCell.classList.add("row-cell")
-        InvoiceCustomerCell.innerHTML=invoices[i].customer.title;
-        
-        var InvoiceCustomerTaxNumberCell = document.createElement("td");
-        InvoiceCustomerTaxNumberCell.classList.add("row-cell")
-        InvoiceCustomerTaxNumberCell.innerHTML=invoices[i].customer.taxNumber;
-
-        var TotalAmountCell = document.createElement("td");
-        TotalAmountCell.classList.add("row-cell")
-        TotalAmountCell.innerHTML=invoices[i].totalAmount;
-
-        var buttonCell = document.createElement("button");
-        buttonCell.classList.add("row-cell")
-        buttonCell.innerHTML="Select";
-        buttonCell.id = invoices[i].id;
-
-        row.appendChild(InvoiceDateCell);
-        row.appendChild(InvoiceNumberCell);
-        row.appendChild(InvoiceCustomerCell)
-        row.appendChild(InvoiceCustomerTaxNumberCell)
-        row.appendChild(TotalAmountCell);
-        row.appendChild(buttonCell);
-        table.appendChild(row);
-    }
-
-    document.body.appendChild(table);
-};
-
-const drawInvoiceLineTable = ([])=>{
-    
-    var table = document.createElement("table");
-    table.classList.add("table-format")
-    var headerRow = document.createElement("tr");
-    headerRow.classList.add("table-header");
-
-    var InvoiceDateHeader = document.createElement("th");
-    InvoiceDateHeader.innerHTML = "Invoice Date";
-
-    var InvoiceNumberHeader = document.createElement("th");
-    InvoiceNumberHeader.innerHTML = "Invoice Number";
-
-    var TotalAmountHeader = document.createElement("th");
-    TotalAmountHeader.innerHTML = "Total Amount";
-
-    var ButtonHeader = document.createElement("th");
-    
-    headerRow.appendChild(InvoiceDateHeader);
-    headerRow.appendChild(InvoiceNumberHeader);
-    headerRow.appendChild(TotalAmountHeader);
-    headerRow.appendChild(ButtonHeader);
-    table.appendChild(headerRow);
-    
-    for(var i=0; i<invoices.length; i++){
-        var row = document.createElement("tr");
-        row.classList.add("table-row");
-
-        var InvoiceDateCell = document.createElement("td");
-        InvoiceDateCell.classList.add("row-cell")
-        InvoiceDateCell.innerHTML=new Date(Date.parse(invoices[i].invoiceDate)).toLocaleDateString();
-
-        var InvoiceNumberCell = document.createElement("td");
-        InvoiceNumberCell.classList.add("row-cell")
-        InvoiceNumberCell.innerHTML=invoices[i].invoiceNumber;
-
-        var TotalAmountCell = document.createElement("td");
-        TotalAmountCell.classList.add("row-cell")
-        TotalAmountCell.innerHTML=invoices[i].totalAmount;
-
-        var buttonCell = document.createElement("button");
-        buttonCell.classList.add("row-cell")
-        buttonCell.innerHTML="Select";
-        buttonCell.id=invoices[i].id;
-        // buttonCell.onclick();
-
-        row.appendChild(InvoiceDateCell);
-        row.appendChild(InvoiceNumberCell);
-        row.appendChild(TotalAmountCell);
-        row.appendChild(buttonCell);
-        table.appendChild(row);
-    }
-
-    document.body.appendChild(table);
-};
-
-// Get Invoices
-let invoices=[]
-const getInvoices=async()=>{
-
-    let data = await fetch('http://localhost:5000/api/invoice');
-
-    let result = await data.json()
-
-    if(result["meta"] !=null)
-        if(result["meta"]["isSuccess"] == true)
+    if (result["meta"] != null)
+        if (result["meta"]["isSuccess"] == true)
             invoices = result["entities"]
+
+            console.log(invoices.length);
+    if (invoices.length > 0)
+        await drawInvoiceTable(invoices);
+}
+
+async function drawInvoiceTable([]) {
+    var html = `<table class="table-format">
+                    <tr class="table-header">
+                        <th>Invoice Date</th>
+                        <th>Invoice Number</th>
+                        <th>Customer</th>
+                        <th>Customer Tax Number</th>
+                        <th>Total Amount</th>
+                        <th></th>
+                    </tr>`;
+
+    invoices.forEach(invoice => {
+        html += `
+            <tr class="table-row">
+                <td class="row-cell">${new Date(Date.parse(invoice.invoiceDate)).toLocaleDateString()}</td>
+                <td class="row-cell">${invoice.invoiceNumber}</td>
+                <td class="row-cell">${invoice.customer.title}</td>
+                <td class="row-cell">${invoice.customer.taxNumber}</td>
+                <td class="row-cell">${invoice.totalAmount}</td>
+                <td class="row-cell"><button id=${invoice.id}>Select</button></td>
+            </tr>`;
+        });
+
+    html += `</table>`;
     
-    if(invoices.length>0)
-        drawInvoiceTable(invoices);
+    document.querySelector('#results').innerHTML = html;
+};
 
-    console.log(invoices);
+class GetInvoice {
+    constructor(startDate, endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }
-
-getInvoices();
-
-//Get Customers
-let customers=[]
-const getCustomers=async()=>{
-
-    let data = await fetch('http://localhost:5000/api/customer');
-
-    let result = await data.json()
-
-    if(result["meta"] !=null)
-        if(result["meta"]["isSuccess"] == true)
-            customers = result["entities"]
-
-
-    if(customers.length>0)
-        drawCustomerTable(customers);
-
-    // customers.map((item)=>{
-    //     customerList(item.customerId,item.title,item.taxNumber,trimText(item.address,50))
-    // })
-    console.log(customers);
-}
-
-// Get Invoices
-let invoiceLines=[]
-
-const getInvoiceLines=async(invoiceId)=>{
-
-    console.log(invoiceId);
-    var url = 'http://localhost:5000/api/invoiceLine/' +invoiceId;
-    let data = await fetch(url);
-
-    let result = await data.json()
-
-    if(result["meta"] !=null)
-        if(result["meta"]["isSuccess"] == true)
-        invoiceLines = result["entities"]
-    
-    if(invoiceLines.length>0)
-        invoiceLines = result["entities"]
-
-    console.log(invoiceLines);
-}
-
-
-// // Post Invoice
-// const postInvoices=async()=>{
-
-//     let data = await fetch('http://localhost:5000/api/invoice');
-
-//     let result = await data.json()
-
-//     if(result["meta"] !=null)
-//         if(result["meta"]["isSuccess"] == true)
-//         invoices = result["entities"]
-//     console.log(invoices);
-// }
