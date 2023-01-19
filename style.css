@@ -1,0 +1,89 @@
+*
+{
+    margin :0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body
+{
+    background: lightgray;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.invoices
+{
+    position: relative;
+    padding: 0.2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,min(390px,1fr));
+    row-gap: 10px;
+    width: 95vw;
+    margin: 10px 50px;
+}
+
+.customers
+{
+    position: relative;
+    padding: 0.2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,min(390px,1fr));
+    row-gap: 10px;
+    width: 95vw;
+    margin: 10px 50px;
+}
+
+.customer
+{
+    position: relative;
+    height: 50px;
+    width: 400px;
+    padding: 0 0 0.5rem;
+    line-height:  25px;
+}
+
+.select
+{
+    position: absolute;
+    padding: 0.5rem 0.5rem;
+    background: orange;
+    color: white;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    right: 10px;
+    bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.table-format {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-header {
+    background-color: #dddddd;
+    font-weight: bold;
+}
+
+.table-row {
+    border: 1px solid #dddddd;
+}
+
+.row-cell {
+    padding: 8px;
+    text-align: center;
+}
+
+.invoice-row-cell {
+    padding: 8px;
+    text-align: center;
+}
+
+.select:hover
+{
+    background:  darkorange;
+}
