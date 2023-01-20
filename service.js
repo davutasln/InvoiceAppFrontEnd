@@ -91,6 +91,29 @@ async function drawSlecetedInvoiceLineTable([]) {
     });
 };
 
+// Get all invoices from api service 
+async function getAll() {
+
+    var url = "http://localhost:5000/api/invoice";
+
+    var data = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+
+    var result = await data.json();
+
+    if (result["meta"] != null)
+        if (result["meta"]["isSuccess"] == true)
+            invoices = result["entities"]
+
+    if (invoices.length > 0)
+        await drawInvoiceTable(invoices);
+}
+
 // Get invoices from api service byDate
 async function getByDate() {
 
@@ -141,6 +164,8 @@ async function getLineItems(invoiceId) {
     if (invoices.length > 0)
         await reDrawPage(selectedInvoiceLines, invoiceId);
 }
+
+getAll();
 
 class GetInvoice {
     constructor(startDate, endDate) {

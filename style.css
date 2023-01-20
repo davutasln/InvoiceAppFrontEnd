@@ -48,9 +48,9 @@ body
     }
   }
   
-  @media (min-width: 1200px) {
+  @media (min-width: 1300px) {
     .container {
-      width: 1170px;
+      width: 1200px;
     }
   }
   
@@ -60,7 +60,6 @@ body
   
   
   /* 2 columns (600px) */
-  
   @media only screen and (min-width:600px) {
     .container .col {
       float: left;
@@ -83,5 +82,14 @@ body
   @media only screen and (min-width:992px) {
     .container .col {
       width: 25%;
+    }
+  }
+
+   
+  /*5  columns (992px) */
+  
+  @media only screen and (min-width:1200px) {
+    .container .col {
+      width: 20%;
     }
   }

@@ -20,18 +20,20 @@
                         max="2025-12-31">
                 </div>
                 <div class="col">
-
                     <label for="start">End Date:</label>
                     <input type="date" id="endDate" name="trip-end" value="2023-01-30" min="2000-01-01"
                         max="2025-12-31">
                 </div>
                 <div class="col">
-                    <button type="button" id="search">Search</button>
-                    <script src="./service.js"></script>
+                    <button type="button" onclick="getByDate()" id="search">Search</button>
+                </div>
+                <div class="col">
+                    <button type="button" onclick="getAll()" id="listAll">List All</button>
                 </div>
                 <div class="col">
                     <input type="button" onclick="location.href='./saveInvoice.html';" value="Add Invoice" />
                 </div>
+                <script src="./service.js"></script>
             </form>
         </div>
     </div>
