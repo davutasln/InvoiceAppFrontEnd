@@ -1,7 +1,7 @@
 document.querySelector('#addInvoiceLine').addEventListener('click', addInvoiceLine);
 
-//Get Customers
 var customers = []
+//Get customers from api service
 const getCustomers = async () => {
 
     let data = await fetch('http://localhost:5000/api/customer');
@@ -17,7 +17,8 @@ const getCustomers = async () => {
 
 getCustomers();
 
-const PopulateDropDownList = async () => {
+// Add Customers to drop down list
+async function PopulateCustomerList (){
     var ddlCustomers = document.getElementById("ddlCustomers");
 
     //Add the Options to the DropDownList.
@@ -29,9 +30,9 @@ const PopulateDropDownList = async () => {
     });
 }
 
-PopulateDropDownList();
 var invoiceLines = [];
 
+// Add invoiceLine list to new item
 async function addInvoiceLine() {
     var productName = document.getElementById('productName').value;
     var quantity = Number.parseInt(document.getElementById('quantity').value);
@@ -44,12 +45,11 @@ async function addInvoiceLine() {
 }
 
 async function removeItem(index) {
-    console.log(index);
     invoiceLines.pop(index);
-    console.log(invoiceLines);
     await drawInvoiceLineTable(invoiceLines);
 }
 
+// Remove from invoiceLine list to selected item
 async function drawInvoiceLineTable([]) {
     var invoiceLineHtml = `
         <table class="table-format">
@@ -66,7 +66,7 @@ async function drawInvoiceLineTable([]) {
             <td class="row-cell">${invoiceLine.itemName}</td>
             <td class="row-cell">${invoiceLine.quantity}</td>
             <td class="row-cell">${invoiceLine.price}</td>
-            <td class="row-cell"><button onclick="removeItem(this)" id=${invoiceLine.index}>Remove</button></td>
+            <td class="row-cell"><button onclick = "removeItem(this)" id=${invoiceLine.index}>Remove</button></td>
         </tr>`;
     });
 
@@ -75,6 +75,7 @@ async function drawInvoiceLineTable([]) {
     document.querySelector('#lineResults').innerHTML = invoiceLineHtml;
 };
 
+// Send new invoice to api service 
 async function postInvoice() {
 
     var url = "http://localhost:5000/api/invoice";
@@ -92,7 +93,6 @@ async function postInvoice() {
     });
 
     var result = data.json();
-    console.log(result);
 }
 
 class PostInvoice {
